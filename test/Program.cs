@@ -1,15 +1,7 @@
-using Microsoft.EntityFrameworkCore;
-using UnitTestRealWorld.Web.Models;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
-builder.Services.AddDbContext<UnitTestDBContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration["SqlConStr"]);
-});
 
 var app = builder.Build();
 
@@ -33,5 +25,3 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-
-
