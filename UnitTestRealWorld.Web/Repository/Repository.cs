@@ -15,7 +15,6 @@ namespace UnitTestRealWorld.Web.Repository
         public async Task Create(TEntity entity)
         {
             await _dbSet.AddAsync(entity);
-
             await _context.SaveChangesAsync();
         }
 
