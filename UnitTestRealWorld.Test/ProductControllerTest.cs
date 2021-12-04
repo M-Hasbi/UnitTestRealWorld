@@ -50,5 +50,12 @@ namespace UnitTestRealWorld.Test
 
             Assert.Equal(2, productList.Count());
         }
+        [Fact]
+        public async void Details_IdIsNull_RedirectToIndexAction()
+        {
+            var result = await _controller.Details(null);
+            var redirect= Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirect.ActionName);
+        }
     }
 }
