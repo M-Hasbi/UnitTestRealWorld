@@ -54,8 +54,21 @@ namespace UnitTestRealWorld.Test
         public async void Details_IdIsNull_RedirectToIndexAction()
         {
             var result = await _controller.Details(null);
-            var redirect= Assert.IsType<RedirectToActionResult>(result);
+            var redirect = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Index", redirect.ActionName);
+        }
+        [Fact]
+        public async void Details_IdIsValid_ReturnNotFound()
+        {
+            Product product = null;
+
+            _mockRepo.Setup(x => x.GetByIdAsync(0)).ReturnsAsync(product);
+
+            var result = await _controller.Details(0);
+
+            var redirect = Assert.IsType<NotFoundResult>(result);
+
+            Assert.Equal<int>(404, redirect.StatusCode);
         }
     }
 }
