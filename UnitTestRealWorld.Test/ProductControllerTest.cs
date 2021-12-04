@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnitTestRealWorld.Web.Controllers;
 using UnitTestRealWorld.Web.Models;
 using UnitTestRealWorld.Web.Repository;
@@ -18,7 +15,7 @@ namespace UnitTestRealWorld.Test
 
         private readonly ProductsController _controller;
 
-        private List<Product> _products;
+        private List<Product> products;
 
 
         public ProductControllerTest()
@@ -27,7 +24,7 @@ namespace UnitTestRealWorld.Test
 
             _controller = new ProductsController(_mockRepo.Object);
 
-            _products = new List<Product>()
+            products = new List<Product>()
             {
               new Product() { Id = 1, Name = "Pencil", Price = 12, Color = "Red", Stock=100 },
               new Product() { Id = 1, Name = "Book", Price = 15, Color = "Blue", Stock=100 }
@@ -39,6 +36,19 @@ namespace UnitTestRealWorld.Test
             var result = await _controller.Index();
 
             Assert.IsType<ViewResult>(result);
+        }
+        [Fact]
+        public async void Index_ActionExecutes_ReturnProductList()
+        {
+            _mockRepo.Setup(repo => repo.GetAllAsync()).ReturnsAsync(products);
+
+            var result = await _controller.Index();
+
+            var viewResult = Assert.IsType<ViewResult>(result);
+
+            var productList = Assert.IsAssignableFrom<IEnumerable<Product>>(viewResult.Model);
+
+            Assert.Equal(2, productList.Count());
         }
     }
 }
