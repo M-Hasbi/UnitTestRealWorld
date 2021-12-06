@@ -87,6 +87,12 @@ namespace UnitTestRealWorld.Test
             Assert.Equal(product.Name, resultProduct.Name);
         }
         [Fact]
+        public void Create_ActionExecutes_ReturnView()
+        {
+            var result = _controller.Create();
+            Assert.IsType<ViewResult>(result);
+        }
+        [Fact]
         public async void Create_InValid_ResultView()
         {
             _controller.ModelState.AddModelError("Name", "Name field must be filled");
@@ -97,5 +103,15 @@ namespace UnitTestRealWorld.Test
 
             Assert.IsType<Product>(viewResult.Model);
         }
+        [Fact]
+        public async void Create_ValidModelState_ReturnRedirectToIndexAction()
+        {
+            var result = await _controller.Create(products.First());
+
+            var redirect = Assert.IsType<RedirectToActionResult>(result);
+
+            Assert.Equal("Index", redirect.ActionName);
+        }
+
     }
 }
