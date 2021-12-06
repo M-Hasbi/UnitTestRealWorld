@@ -124,6 +124,16 @@ namespace UnitTestRealWorld.Test
 
             Assert.Equal(products.First().Id, newProduct.Id);
         }
+        [Fact]
+        public async void CreatePOST_InValidModelState_CreateMethodNotExecute()
+        {
+            _controller.ModelState.AddModelError("Name", "");
+
+            var result = await _controller.Create(products.First());
+
+            _mockRepo.Verify(repo => repo.Create(It.IsAny<Product>()), Times.Never);
+        }
+
 
 
     }
