@@ -27,7 +27,7 @@ namespace UnitTestRealWorld.Test
             products = new List<Product>()
             {
               new Product() { Id = 1, Name = "Pencil", Price = 12, Color = "Red", Stock=100 },
-              new Product() { Id = 1, Name = "Book", Price = 15, Color = "Blue", Stock=100 }
+              new Product() { Id = 2, Name = "Book", Price = 15, Color = "Blue", Stock=100 }
             };
         }
         [Fact]
@@ -69,6 +69,33 @@ namespace UnitTestRealWorld.Test
             var redirect = Assert.IsType<NotFoundResult>(result);
 
             Assert.Equal<int>(404, redirect.StatusCode);
+        }
+        [Theory]
+        [InlineData(1)]
+        public async void Details_ValidId_ReturnProduct(int productId)
+        {
+            Product product = products.First(x => x.Id == productId);
+            _mockRepo.Setup(repo => repo.GetByIdAsync(productId)).ReturnsAsync(product);
+
+            var result = await _controller.Details(productId);
+
+            var viewResult = Assert.IsType<ViewResult>(result);
+
+            var resultProduct = Assert.IsAssignableFrom<Product>(viewResult.Model);
+
+            Assert.Equal(product.Id, resultProduct.Id);
+            Assert.Equal(product.Name, resultProduct.Name);
+        }
+        [Fact]
+        public async void Create_InValid_ResultView()
+        {
+            _controller.ModelState.AddModelError("Name", "Name field must be filled");
+
+            var result = await _controller.Create(products.First());
+
+            var viewResult = Assert.IsType<ViewResult>(result);
+
+            Assert.IsType<Product>(viewResult.Model);
         }
     }
 }
