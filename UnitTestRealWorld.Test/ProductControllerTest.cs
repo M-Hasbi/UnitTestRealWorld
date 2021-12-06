@@ -93,7 +93,7 @@ namespace UnitTestRealWorld.Test
             Assert.IsType<ViewResult>(result);
         }
         [Fact]
-        public async void Create_InValid_ResultView()
+        public async void CreatePOST_InValid_ResultView()
         {
             _controller.ModelState.AddModelError("Name", "Name field must be filled");
 
@@ -104,7 +104,7 @@ namespace UnitTestRealWorld.Test
             Assert.IsType<Product>(viewResult.Model);
         }
         [Fact]
-        public async void Create_ValidModelState_ReturnRedirectToIndexAction()
+        public async void CreatePOST_ValidModelState_ReturnRedirectToIndexAction()
         {
             var result = await _controller.Create(products.First());
 
@@ -112,6 +112,19 @@ namespace UnitTestRealWorld.Test
 
             Assert.Equal("Index", redirect.ActionName);
         }
+        [Fact]
+        public async void CreatePOST_ValidModelState_CreateMethodExecute()
+        {
+            Product newProduct = null;
+            _mockRepo.Setup(repo => repo.Create(It.IsAny<Product>())).Callback<Product>(x => newProduct = x);
+
+            var result = await _controller.Create(products.First());
+
+            _mockRepo.Verify(repo => repo.Create(It.IsAny<Product>()), Times.Once);
+
+            Assert.Equal(products.First().Id, newProduct.Id);
+        }
+
 
     }
 }
