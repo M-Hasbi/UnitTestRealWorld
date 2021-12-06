@@ -133,7 +133,30 @@ namespace UnitTestRealWorld.Test
 
             _mockRepo.Verify(repo => repo.Create(It.IsAny<Product>()), Times.Never);
         }
+        [Fact]
+        public async void Edit_IdIsNull_RedirectToActionResult()
+        {
+            var result = await _controller.Edit(null);
 
+            var redirect = Assert.IsType<RedirectToActionResult>(result);
+
+            Assert.Equal("Index", redirect.ActionName);
+        }
+        [Theory]
+        [InlineData(3)]
+        public async void Edit_InValid_ReturnNotFound(int productId)
+        {
+            Product product = null;
+
+            _mockRepo.Setup(x => x.GetByIdAsync(productId)).ReturnsAsync(product);
+            
+            var result = await _controller.Edit(productId);
+
+            var redirect = Assert.IsType<NotFoundResult>(result);
+
+            Assert.Equal<int>(404, redirect.StatusCode);
+
+        }
 
 
     }
