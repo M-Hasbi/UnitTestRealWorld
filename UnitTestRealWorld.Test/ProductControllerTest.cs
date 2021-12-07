@@ -203,6 +203,20 @@ namespace UnitTestRealWorld.Test
 
             Assert.Equal("Index", redirect.ActionName);
         }
+        [Theory]
+        [InlineData(2)]
+        public void EditPOST_ValidModelState_ExecuteUpdate(int productId)
+        {
+            Product product = products.First(x => x.Id == productId);
+
+            _mockRepo.Setup(repo => repo.Update(product));
+
+            _controller.Edit(productId,product);
+
+            _mockRepo.Verify(repo => repo.Update(It.IsAny<Product>()),Times.Once);
+
+
+        }
 
 
 
