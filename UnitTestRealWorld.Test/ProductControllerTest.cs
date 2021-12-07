@@ -181,7 +181,18 @@ namespace UnitTestRealWorld.Test
 
             Assert.IsType<NotFoundResult>(result);
         }
+        [Theory]
+        [InlineData(2)]
+        public void EditPOST_ModeStateInValid_ReturnView(int productId)
+        {
+            _controller.ModelState.AddModelError("Name", "");
 
+            var result = _controller.Edit(productId,products.First(x=>x.Id==productId));
+
+            var viewResult = Assert.IsType<ViewResult>(result);
+
+            Assert.IsType<Product>(viewResult.Model);
+        }
 
 
     }
