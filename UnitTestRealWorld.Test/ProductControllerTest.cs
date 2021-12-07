@@ -173,6 +173,16 @@ namespace UnitTestRealWorld.Test
             Assert.Equal(product.Id, resultProduct.Id);
             Assert.Equal(product.Name, resultProduct.Name);
         }
+        [Theory]
+        [InlineData(2)]
+        public void EditPOST_IdIsNotEqualProduct_ReturnNotFound(int productId)
+        {
+            var result = _controller.Edit(1, products.First(x => x.Id == productId));
+
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+
 
     }
 }
