@@ -236,7 +236,26 @@ namespace UnitTestRealWorld.Test
 
             var redirect = Assert.IsType<NotFoundResult>(result);
         }
+        [Theory]
+        [InlineData(1)]
+        public async void Delete_ActionExecutes_ReturnProduct(int productId)
+        {
+            Product product = products.First(x => x.Id == productId);
+
+            _mockRepo.Setup(repo => repo.GetByIdAsync(productId)).ReturnsAsync(product);
+
+            var result = await _controller.Delete(productId);
+
+            var viewResult = Assert.IsType<ViewResult>(result);
+
+            var resultProduct = Assert.IsAssignableFrom<Product>(viewResult.Model);
+
+            Assert.Equal(product.Id, resultProduct.Id);
+            Assert.Equal(product.Name, resultProduct.Name);
 
 
+
+
+        }
     }
 }
