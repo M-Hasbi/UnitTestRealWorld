@@ -149,7 +149,7 @@ namespace UnitTestRealWorld.Test
             Product product = null;
 
             _mockRepo.Setup(x => x.GetByIdAsync(productId)).ReturnsAsync(product);
-            
+
             var result = await _controller.Edit(productId);
 
             var redirect = Assert.IsType<NotFoundResult>(result);
@@ -157,7 +157,22 @@ namespace UnitTestRealWorld.Test
             Assert.Equal<int>(404, redirect.StatusCode);
 
         }
+        [Theory]
+        [InlineData(2)]
+        public async void Edit_ActionExecutes_ReturnProduct(int productId)
+        {
+            var product = products.First(x => x.Id == productId);
+            _mockRepo.Setup(repo => repo.GetByIdAsync(productId)).ReturnsAsync(product);
 
+            var result = await _controller.Edit(productId);
+
+            var viewResult = Assert.IsType<ViewResult>(result);
+
+            var resultProduct = Assert.IsAssignableFrom<Product>(viewResult.Model);
+
+            Assert.Equal(product.Id, resultProduct.Id);
+            Assert.Equal(product.Name, resultProduct.Name);
+        }
 
     }
 }
