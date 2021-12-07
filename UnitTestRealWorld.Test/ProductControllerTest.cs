@@ -211,9 +211,9 @@ namespace UnitTestRealWorld.Test
 
             _mockRepo.Setup(repo => repo.Update(product));
 
-            _controller.Edit(productId,product);
+            _controller.Edit(productId, product);
 
-            _mockRepo.Verify(repo => repo.Update(It.IsAny<Product>()),Times.Once);
+            _mockRepo.Verify(repo => repo.Update(It.IsAny<Product>()), Times.Once);
 
 
         }
@@ -224,7 +224,18 @@ namespace UnitTestRealWorld.Test
 
             Assert.IsType<NotFoundResult>(result);
         }
+        [Theory]
+        [InlineData(0)]
+        public async void Delete_ProductIsNull_ReturnNotFound(int productId)
+        {
+            Product product = null;
 
+            _mockRepo.Setup(x => x.GetByIdAsync(productId)).ReturnsAsync(product);
+
+            var result = await _controller.Delete(productId);
+
+            var redirect = Assert.IsType<NotFoundResult>(result);
+        }
 
 
     }
