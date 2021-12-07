@@ -187,12 +187,23 @@ namespace UnitTestRealWorld.Test
         {
             _controller.ModelState.AddModelError("Name", "");
 
-            var result = _controller.Edit(productId,products.First(x=>x.Id==productId));
+            var result = _controller.Edit(productId, products.First(x => x.Id == productId));
 
             var viewResult = Assert.IsType<ViewResult>(result);
 
             Assert.IsType<Product>(viewResult.Model);
         }
+        [Theory]
+        [InlineData(2)]
+        public void EditPOST_ValidModelState_ReturnRedirectToActionIndex(int productId)
+        {
+            var result = _controller.Edit(productId, products.First(x => x.Id == productId));
+
+            var redirect = Assert.IsType<RedirectToActionResult>(result);
+
+            Assert.Equal("Index", redirect.ActionName);
+        }
+
 
 
     }
