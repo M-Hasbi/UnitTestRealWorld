@@ -144,7 +144,7 @@ namespace UnitTestRealWorld.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProductExists(int id)
+        public bool ProductExists(int id)
         {
             var product = _repository.GetByIdAsync(id);
             if (product == null)

@@ -283,6 +283,32 @@ namespace UnitTestRealWorld.Test
 
         }
 
+        [Theory]
+        [InlineData(1)]
+        public void ProductExists_ProductIsNotNull_ReturnTrue(int productId)
+        {
+
+            Product product = products.First(x => x.Id == productId);
+
+            _mockRepo.Setup(x => x.GetByIdAsync(productId)).ReturnsAsync(product);
+
+            var result = _controller.ProductExists(productId);
+
+            Assert.True(result);
+        }
+        [Theory]
+        [InlineData(1)]
+        public void ProductExists_ProductIsNull_ReturnFalse(int productId)
+        {
+
+            Product product = null;
+
+            _mockRepo.Setup(x => x.GetByIdAsync(productId)).ReturnsAsync(product);
+
+            var result = _controller.ProductExists(productId);
+
+            Assert.False(result);
+        }
 
     }
 }
