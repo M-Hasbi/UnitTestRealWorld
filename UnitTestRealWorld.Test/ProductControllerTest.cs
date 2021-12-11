@@ -257,5 +257,17 @@ namespace UnitTestRealWorld.Test
 
 
         }
+
+        [Theory]
+        [InlineData(1)]
+        public async void DeleteConfirmed_ActionExecutes_ReturnRedirectToActionIndex(int productId)
+        {
+            var result = await _controller.DeleteConfirmed(productId);
+
+            Assert.IsType<RedirectToActionResult>(result);
+
+        }
+
+
     }
 }
