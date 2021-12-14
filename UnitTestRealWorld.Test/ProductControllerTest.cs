@@ -25,9 +25,9 @@ namespace UnitTestRealWorld.Test
             _controller = new ProductsController(_mockRepo.Object);
 
             products = new List<Product>()
-            {
-              new Product() { Id = 1, Name = "Pencil", Price = 12, Color = "Red", Stock=100 },
-              new Product() { Id = 2, Name = "Book", Price = 15, Color = "Blue", Stock=100 }
+             {
+                new Product { Id = 1, Name = "Pencil", Price = 12, Color = "Red", Stock = 100 },
+                new Product { Id = 2, Name = "Book", Price = 15, Color = "Blue", Stock = 100 }
             };
         }
         [Fact]
