@@ -146,7 +146,7 @@ namespace UnitTestRealWorld.Web.Controllers
 
         public bool ProductExists(int id)
         {
-            var product = _repository.GetByIdAsync(id);
+            var product = _repository.GetByIdAsync(id).Result;
             if (product == null)
             {
                 return false;
