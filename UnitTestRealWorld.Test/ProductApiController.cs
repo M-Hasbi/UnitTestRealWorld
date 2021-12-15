@@ -38,15 +38,26 @@ namespace UnitTestRealWorld.Test
         }
         [Theory]
         [InlineData(0)]
-        public async void GetProduct_ProductIsNull_ReturnNotFound(int productId)
+        public async void GetProduct_InValidId_ReturnNotFound(int productId)
         {
             Product product = null;
 
-            _mockRepo.Setup(x=>x.GetByIdAsync(productId)).ReturnsAsync(product);
+            _mockRepo.Setup(x => x.GetByIdAsync(productId)).ReturnsAsync(product);
 
             var result = await _controller.GetProduct(productId);
 
             Assert.IsType<NotFoundResult>(result);
+
+        }
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        public async void GetProduct_ValidId_ReturnOkWithProduct(int productId)
+        {
+            Product product = products.First(x => x.Id == productId);
+            _mockRepo.Setup(x => x.GetByIdAsync(productId)).ReturnsAsync(product);
+            var result = await _controller.GetProduct(productId);
+            Assert.IsType<OkObjectResult>(result);
 
         }
 
