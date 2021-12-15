@@ -14,6 +14,12 @@ namespace UnitTestRealWorld.Test
         private readonly Mock<IRepository<Product>> _mockRepo;
         private readonly ProductsApiController _controller;
 
+        private Product GetFirstProduct(int productId)
+        {
+            Product product = products.First(x => x.Id == productId);
+            return product;
+        }
+
         private List<Product> products;
         public ProductApiController()
         {
@@ -54,7 +60,7 @@ namespace UnitTestRealWorld.Test
         [InlineData(2)]
         public async void GetProduct_ValidId_ReturnOkWithProduct(int productId)
         {
-            Product product = products.First(x => x.Id == productId);
+            var product = GetFirstProduct(productId);
 
             _mockRepo.Setup(x => x.GetByIdAsync(productId)).ReturnsAsync(product);
 
@@ -71,11 +77,25 @@ namespace UnitTestRealWorld.Test
         [InlineData(1)]
         public void PutProduct_IdIsNotEqualToProduct_ReturnBadRequest(int productId)
         {
-            var product = products.First(x=>x.Id==productId);
+            var product = GetFirstProduct(productId);
 
             var result = _controller.PutProduct(2,product);
 
             Assert.IsType<BadRequestResult>(result);
+        }
+        [Theory]
+        [InlineData(1)]
+        public void PutProduct_ActionExecutes_ReturnNoContent(int productId)
+        {
+            var product = GetFirstProduct(productId);
+
+            _mockRepo.Setup(x => x.Update(product));
+
+            var result = _controller.PutProduct(productId, product);
+
+            _mockRepo.Verify(x => x.Update(product), Times.Once);
+
+            Assert.IsType<NoContentResult>(result);
         }
 
     }
