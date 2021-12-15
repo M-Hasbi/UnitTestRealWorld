@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using UnitTestRealWorld.Web.Models;
 using UnitTestRealWorld.Web.Repository;
 
@@ -31,7 +25,7 @@ namespace UnitTestRealWorld.Web.Controllers
 
         // GET: api/ProductsApi/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(int id)
+        public async Task<ActionResult> GetProduct(int id)
         {
             var product = await _repository.GetByIdAsync(id);
 
