@@ -3,6 +3,7 @@ using Moq;
 using System.Collections.Generic;
 using System.Linq;
 using UnitTestRealWorld.Web.Controllers;
+using UnitTestRealWorld.Web.Helpers;
 using UnitTestRealWorld.Web.Models;
 using UnitTestRealWorld.Web.Repository;
 using Xunit;
@@ -15,6 +16,8 @@ namespace UnitTestRealWorld.Test
 
         private readonly ProductsController _controller;
 
+        private readonly Helper _helper;
+
         private List<Product> products;
 
 
@@ -24,12 +27,24 @@ namespace UnitTestRealWorld.Test
 
             _controller = new ProductsController(_mockRepo.Object);
 
+            _helper = new Helper();
+
             products = new List<Product>()
              {
                 new Product { Id = 1, Name = "Pencil", Price = 12, Color = "Red", Stock = 100 },
                 new Product { Id = 2, Name = "Book", Price = 15, Color = "Blue", Stock = 100 }
             };
         }
+
+        [Theory]
+        [InlineData(2, 2, 4)]
+        public void Add_SampleValues_ReturnTotal(int a, int b, int total)
+        {
+            var result = _helper.Add(a, b);
+
+            Assert.Equal(total, result);
+        }
+
         [Fact]
         public async void Index_ActionExecutes_ReturnView()
         {
@@ -51,7 +66,7 @@ namespace UnitTestRealWorld.Test
             Assert.Equal(2, productList.Count());
         }
         [Fact]
-        public async void Details_IdIsNull_RedirectToIndexAction()  
+        public async void Details_IdIsNull_RedirectToIndexAction()
         {
             var result = await _controller.Details(null);
             var redirect = Assert.IsType<RedirectToActionResult>(result);

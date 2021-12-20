@@ -130,17 +130,19 @@ namespace UnitTestRealWorld.Test
         {
             Product product = products.First(x => x.Id == productId);
 
-            _mockRepo.Setup(x=>x.GetByIdAsync(productId)).ReturnsAsync(product);
+            _mockRepo.Setup(x => x.GetByIdAsync(productId)).ReturnsAsync(product);
             _mockRepo.Setup(x => x.Delete(product));
 
             var result = await _controller.DeleteProduct(productId);
 
             _mockRepo.Verify(x => x.Delete(product), Times.Once);
 
-           var noContentResult = Assert.IsType<NoContentResult>(result);
+            var noContentResult = Assert.IsType<NoContentResult>(result);
 
 
         }
+
+
 
     }
 }
