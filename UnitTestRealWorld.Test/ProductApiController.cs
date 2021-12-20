@@ -2,6 +2,7 @@
 using Moq;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnitTestRealWorld.Web.Controllers;
 using UnitTestRealWorld.Web.Models;
 using UnitTestRealWorld.Web.Repository;
@@ -79,7 +80,7 @@ namespace UnitTestRealWorld.Test
         {
             var product = GetFirstProduct(productId);
 
-            var result = _controller.PutProduct(2,product);
+            var result = _controller.PutProduct(2, product);
 
             Assert.IsType<BadRequestResult>(result);
         }
@@ -96,6 +97,20 @@ namespace UnitTestRealWorld.Test
             _mockRepo.Verify(x => x.Update(product), Times.Once);
 
             Assert.IsType<NoContentResult>(result);
+        }
+        [Fact]
+        public async void PostProduct_ActionExecutes_ReturnCreatedActionResult()
+        {
+            var product = products.First();
+            _mockRepo.Setup(x => x.Create(product)).Returns(Task.CompletedTask);
+
+            var result = await _controller.PostProduct(product);
+
+            var createdActionResult = Assert.IsType<CreatedAtActionResult>(result);
+
+            _mockRepo.Verify(x => x.Create(product), Times.Once);
+
+            Assert.Equal("GetProduct", createdActionResult.ActionName);
         }
 
     }
