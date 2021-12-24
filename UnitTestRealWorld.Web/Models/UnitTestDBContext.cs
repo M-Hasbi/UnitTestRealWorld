@@ -17,6 +17,7 @@ namespace UnitTestRealWorld.Web.Models
         }
 
         public virtual DbSet<Product> Products { get; set; } = null!;
+        public virtual DbSet<Category> Categories { get; set; } = null!;
 
 
 
@@ -34,6 +35,8 @@ namespace UnitTestRealWorld.Web.Models
 
                 entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
             });
+
+            modelBuilder.Entity<Category>().HasData(new Category { Id = 1, Name = "Books" }, new Category { Id = 2, Name = "Notebooks" });
 
             OnModelCreatingPartial(modelBuilder);
         }
