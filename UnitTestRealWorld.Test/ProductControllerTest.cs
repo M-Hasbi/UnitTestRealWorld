@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnitTestRealWorld.Web.Models;
 
 namespace UnitTestRealWorld.Test
@@ -15,6 +10,7 @@ namespace UnitTestRealWorld.Test
         public void SetContextOptions(DbContextOptions<UnitTestDBContext> contextOptions)
         {
             _contextOptions = contextOptions;
+            Seed();
         }
 
         public void Seed()
@@ -29,7 +25,8 @@ namespace UnitTestRealWorld.Test
                 context.SaveChanges();
 
 
-                context.Products.Add(new Product { CategoryId = 1, Name = "Book1" });
+              //  context.Products.Add(new Product { CategoryId = 1, Name = "Book1", Color = "Red", Price = 200, Stock = 2000 });
+               // context.Products.Add(new Product { CategoryId = 1, Name = "Book2", Color = "Blue", Price = 200, Stock = 2000 });
                 context.SaveChanges();
             }
         }
