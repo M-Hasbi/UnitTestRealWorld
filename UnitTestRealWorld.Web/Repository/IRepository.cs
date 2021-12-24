@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace UnitTestRealWorld.Web.Repository
+﻿namespace UnitTestRealWorld.Web.Repository
 {
     public interface IRepository<TEntity> where TEntity : class
     {

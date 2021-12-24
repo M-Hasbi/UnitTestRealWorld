@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace UnitTestRealWorld.Web.Models
 {
@@ -36,7 +33,7 @@ namespace UnitTestRealWorld.Web.Models
                 entity.Property(e => e.Price).HasColumnType("decimal(18, 2)");
             });
 
-            modelBuilder.Entity<Category>().HasData(new Category { Id = 1, Name = "Books" }, new Category { Id = 2, Name = "Notebooks" });
+            //modelBuilder.Entity<Category>().HasData(new Category { Id = 1, Name = "Books" }, new Category { Id = 2, Name = "Notebooks" });
 
             OnModelCreatingPartial(modelBuilder);
         }
