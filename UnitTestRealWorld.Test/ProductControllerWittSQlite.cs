@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using UnitTestRealWorld.Web.Controllers;
 using UnitTestRealWorld.Web.Models;
@@ -8,11 +12,12 @@ using Xunit;
 
 namespace UnitTestRealWorld.Test
 {
-    public class ProductControllerWithInMemoryTest : ProductControllerTest
+    public class ProductControllerWittSQlite : ProductControllerTest
     {
-        public ProductControllerWithInMemoryTest()
+        public ProductControllerWittSQlite()
         {
-            SetContextOptions(new DbContextOptionsBuilder<UnitTestDBContext>().UseInMemoryDatabase("UnitTestInMemoryDB").Options);
+            var connection = new SqliteConnection("DataSource=:memory:");
+            SetContextOptions(new DbContextOptionsBuilder<UnitTestDBContext>().UseSqlite(connection).Options);
         }
         [Fact]
         public async Task Create_ValidModelState_ReturnRedirectToAction()
@@ -42,7 +47,7 @@ namespace UnitTestRealWorld.Test
         }
 
         [Theory]
-        [InlineData(1)]
+        [InlineData(2)]
         public async Task DeleteCategory_ExistCategoryId_DeleteAllProducts(int categoryId)
         {
             using (var context = new UnitTestDBContext(_contextOptions))

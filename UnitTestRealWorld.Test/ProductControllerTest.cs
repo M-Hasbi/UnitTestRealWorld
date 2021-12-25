@@ -25,8 +25,8 @@ namespace UnitTestRealWorld.Test
                 context.SaveChanges();
 
 
-              //  context.Products.Add(new Product { CategoryId = 1, Name = "Book1", Color = "Red", Price = 200, Stock = 2000 });
-               // context.Products.Add(new Product { CategoryId = 1, Name = "Book2", Color = "Blue", Price = 200, Stock = 2000 });
+               // context.Products.Add(new Product { CategoryId = 2, Name = "Book10", Color = "Red", Price = 200, Stock = 2000 });
+               // context.Products.Add(new Product { CategoryId = 2, Name = "Book20", Color = "Blue", Price = 200, Stock = 2000 });
                 context.SaveChanges();
             }
         }
